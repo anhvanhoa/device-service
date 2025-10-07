@@ -23,10 +23,10 @@ type SensorDataItem struct {
 	SensorType   string
 	Value        float64
 	Unit         string
-	RecordedAt   string
+	RecordedAt   time.Time
 	IsAlert      bool
-	QualityScore *float64
-	CreatedAt    string
+	QualityScore float64
+	CreatedAt    time.Time
 }
 
 type SensorDataFilters struct {
@@ -95,13 +95,13 @@ func (u *ListSensorDataUsecase) Execute(ctx context.Context, req *ListSensorData
 		item := SensorDataItem{
 			ID:           sensorData.ID,
 			DeviceID:     sensorData.DeviceID,
-			SensorType:   *sensorData.SensorType,
-			Value:        *sensorData.Value,
-			Unit:         *sensorData.Unit,
-			RecordedAt:   sensorData.RecordedAt.Format("2006-01-02T15:04:05Z07:00"),
+			SensorType:   sensorData.SensorType,
+			Value:        sensorData.Value,
+			Unit:         sensorData.Unit,
+			RecordedAt:   sensorData.RecordedAt,
 			IsAlert:      sensorData.IsAlert,
 			QualityScore: sensorData.QualityScore,
-			CreatedAt:    sensorData.CreatedAt.Format("2006-01-02T15:04:05Z07:00"),
+			CreatedAt:    sensorData.CreatedAt,
 		}
 
 		items[i] = item

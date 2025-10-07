@@ -19,8 +19,9 @@ type IoTDeviceHistoryRepository interface {
 }
 
 type IoTDeviceHistoryFilters struct {
-	DeviceID  *string
-	Action    *entity.DeviceAction
-	StartDate *time.Time
-	EndDate   *time.Time
+	DeviceID    string
+	Action      entity.DeviceAction
+	PerformedBy string
+	StartDate   *time.Time
+	EndDate     *time.Time
 }

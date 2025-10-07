@@ -4,6 +4,7 @@ import (
 	"context"
 	"device-service/domain/entity"
 	"device-service/domain/repository"
+	"time"
 )
 
 type CreateIoTDeviceHistoryRequest struct {
@@ -21,7 +22,7 @@ type CreateIoTDeviceHistoryResponse struct {
 	Action      string
 	OldValue    map[string]any
 	NewValue    map[string]any
-	ActionDate  string
+	ActionDate  time.Time
 	PerformedBy string
 	Notes       *string
 }
@@ -65,7 +66,7 @@ func (u *CreateIoTDeviceHistoryUsecase) Execute(ctx context.Context, req *Create
 		Action:      string(history.Action),
 		OldValue:    map[string]any(history.OldValue),
 		NewValue:    map[string]any(history.NewValue),
-		ActionDate:  history.ActionDate.Format("2006-01-02T15:04:05Z07:00"),
+		ActionDate:  history.ActionDate,
 		PerformedBy: history.PerformedBy,
 		Notes:       history.Notes,
 	}, nil

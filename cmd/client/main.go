@@ -652,12 +652,12 @@ func (c *DeviceServiceClient) TestCreateIotDeviceHistory() {
 	notes = cleanInput(notes)
 
 	// Create simple old_value and new_value structs
-	oldValue, _ := structpb.NewStruct(map[string]interface{}{
+	oldValue, _ := structpb.NewStruct(map[string]any{
 		"status":        "inactive",
 		"battery_level": 50,
 	})
 
-	newValue, _ := structpb.NewStruct(map[string]interface{}{
+	newValue, _ := structpb.NewStruct(map[string]any{
 		"status":        "active",
 		"battery_level": 80,
 	})
@@ -683,6 +683,7 @@ func (c *DeviceServiceClient) TestCreateIotDeviceHistory() {
 	fmt.Printf("Hành động: %s\n", resp.Action)
 	fmt.Printf("Ngày thực hiện: %s\n", resp.ActionDate)
 	fmt.Printf("Người thực hiện: %s\n", resp.PerformedBy)
+	fmt.Printf("Ghi chú: %s\n", resp.Notes)
 }
 
 func (c *DeviceServiceClient) TestGetIotDeviceHistory() {
@@ -713,6 +714,7 @@ func (c *DeviceServiceClient) TestGetIotDeviceHistory() {
 		fmt.Printf("Ngày thực hiện: %s\n", resp.History.ActionDate)
 		fmt.Printf("Người thực hiện: %s\n", resp.History.PerformedBy)
 		fmt.Printf("Ghi chú: %s\n", resp.History.Notes)
+		fmt.Printf("Ngày tạo: %s\n", resp.History.CreatedAt.AsTime().Format(time.DateOnly))
 	}
 }
 
@@ -754,10 +756,20 @@ func (c *DeviceServiceClient) TestListIotDeviceHistories() {
 		filters.PerformedBy = performedBy
 	}
 	if startDate != "" {
-		filters.StartDate = startDate
+		t, err := time.Parse(time.DateOnly, startDate)
+		if err != nil {
+			fmt.Printf("Error parsing start date: %v\n", err)
+			return
+		}
+		filters.StartDate = timestamppb.New(t)
 	}
 	if endDate != "" {
-		filters.EndDate = endDate
+		t, err := time.Parse(time.DateOnly, endDate)
+		if err != nil {
+			fmt.Printf("Error parsing end date: %v\n", err)
+			return
+		}
+		filters.EndDate = timestamppb.New(t)
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -779,8 +791,8 @@ func (c *DeviceServiceClient) TestListIotDeviceHistories() {
 	fmt.Printf("Tổng số: %d\n", resp.Pagination.Total)
 	fmt.Printf("Danh sách lịch sử thiết bị IoT:\n")
 	for i, history := range resp.Data {
-		fmt.Printf("  [%d] ID: %s, Thiết bị: %s, Hành động: %s, Ngày: %s\n",
-			i+1, history.Id, history.DeviceId, history.Action, history.ActionDate)
+		fmt.Printf("  [%d] ID: %s, Thiết bị: %s, Hành động: %s, Ngày: %s, Ngày tạo: %s\n",
+			i+1, history.Id, history.DeviceId, history.Action, history.ActionDate, history.CreatedAt.AsTime().Format(time.DateOnly))
 	}
 }
 
@@ -876,8 +888,8 @@ func (c *DeviceServiceClient) TestCreateSensorData() {
 	fmt.Printf("Giá trị: %.2f %s\n", resp.Value, resp.Unit)
 	fmt.Printf("Có cảnh báo: %t\n", resp.IsAlert)
 	fmt.Printf("Điểm chất lượng: %.2f\n", resp.QualityScore)
-	fmt.Printf("Ngày ghi nhận: %s\n", resp.RecordedAt)
-	fmt.Printf("Ngày tạo: %s\n", resp.CreatedAt)
+	fmt.Printf("Ngày ghi nhận: %s\n", resp.RecordedAt.AsTime().Format(time.DateOnly))
+	fmt.Printf("Ngày tạo: %s\n", resp.CreatedAt.AsTime().Format(time.DateOnly))
 }
 
 func (c *DeviceServiceClient) TestGetSensorData() {
@@ -906,10 +918,10 @@ func (c *DeviceServiceClient) TestGetSensorData() {
 		fmt.Printf("ID thiết bị: %s\n", resp.SensorData.DeviceId)
 		fmt.Printf("Loại cảm biến: %s\n", resp.SensorData.SensorType)
 		fmt.Printf("Giá trị: %.2f %s\n", resp.SensorData.Value, resp.SensorData.Unit)
-		fmt.Printf("Ngày ghi nhận: %s\n", resp.SensorData.RecordedAt)
+		fmt.Printf("Ngày ghi nhận: %s\n", resp.SensorData.RecordedAt.AsTime().Format(time.DateOnly))
 		fmt.Printf("Có cảnh báo: %t\n", resp.SensorData.IsAlert)
 		fmt.Printf("Điểm chất lượng: %.2f\n", resp.SensorData.QualityScore)
-		fmt.Printf("Ngày tạo: %s\n", resp.SensorData.CreatedAt)
+		fmt.Printf("Ngày tạo: %s\n", resp.SensorData.CreatedAt.AsTime().Format(time.DateOnly))
 	}
 }
 
@@ -989,10 +1001,20 @@ func (c *DeviceServiceClient) TestListSensorData() {
 		filters.MaxQualityScore = maxQuality
 	}
 	if startDate != "" {
-		filters.StartDate = startDate
+		t, err := time.Parse(time.DateOnly, startDate)
+		if err != nil {
+			fmt.Printf("Error parsing start date: %v\n", err)
+			return
+		}
+		filters.StartDate = timestamppb.New(t)
 	}
 	if endDate != "" {
-		filters.EndDate = endDate
+		t, err := time.Parse(time.DateOnly, endDate)
+		if err != nil {
+			fmt.Printf("Error parsing end date: %v\n", err)
+			return
+		}
+		filters.EndDate = timestamppb.New(t)
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -1014,9 +1036,11 @@ func (c *DeviceServiceClient) TestListSensorData() {
 	fmt.Printf("Tổng số: %d\n", resp.Pagination.Total)
 	fmt.Printf("Danh sách dữ liệu cảm biến:\n")
 	for i, sensorData := range resp.Data {
-		fmt.Printf("  [%d] ID: %s, Thiết bị: %s, Loại: %s, Giá trị: %.2f %s, Cảnh báo: %t\n",
+		fmt.Printf("  [%d] ID: %s, Thiết bị: %s, Loại: %s, Giá trị: %.2f %s, Cảnh báo: %t, Chất lượng: %.2f, Ngày ghi nhận: %s, Ngày tạo: %s\n",
 			i+1, sensorData.Id, sensorData.DeviceId, sensorData.SensorType,
-			sensorData.Value, sensorData.Unit, sensorData.IsAlert)
+			sensorData.Value, sensorData.Unit, sensorData.IsAlert, sensorData.QualityScore,
+			sensorData.RecordedAt.AsTime().Format(time.DateOnly),
+			sensorData.CreatedAt.AsTime().Format(time.DateOnly))
 	}
 }
 

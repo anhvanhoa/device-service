@@ -63,11 +63,14 @@ func (r *iotDeviceHistoryRepository) List(ctx context.Context, filters repositor
 
 	query := r.db.Model(&histories).Context(ctx)
 
-	if filters.DeviceID != nil {
-		query = query.Where("device_id = ?", *filters.DeviceID)
+	if filters.DeviceID != "" {
+		query = query.Where("device_id = ?", filters.DeviceID)
 	}
-	if filters.Action != nil {
-		query = query.Where("action = ?", *filters.Action)
+	if filters.Action != "" {
+		query = query.Where("action = ?", filters.Action)
+	}
+	if filters.PerformedBy != "" {
+		query = query.Where("performed_by = ?", filters.PerformedBy)
 	}
 	if filters.StartDate != nil {
 		query = query.Where("action_date >= ?", *filters.StartDate)

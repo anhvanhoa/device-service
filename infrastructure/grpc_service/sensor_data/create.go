@@ -5,6 +5,7 @@ import (
 	"device-service/domain/usecase/sensor_data"
 
 	proto_sensor_data "github.com/anhvanhoa/sf-proto/gen/sensor_data/v1"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func (s *SensorDataService) CreateSensorData(ctx context.Context, req *proto_sensor_data.CreateSensorDataRequest) (*proto_sensor_data.CreateSensorDataResponse, error) {
@@ -34,17 +35,14 @@ func (s *SensorDataService) convertRequestCreateSensorData(req *proto_sensor_dat
 
 func (s *SensorDataService) convertResponseCreateSensorData(response *sensor_data.CreateSensorDataResponse) *proto_sensor_data.CreateSensorDataResponse {
 	resp := &proto_sensor_data.CreateSensorDataResponse{
-		DeviceId:   response.DeviceID,
-		SensorType: response.SensorType,
-		Value:      response.Value,
-		Unit:       response.Unit,
-		RecordedAt: response.RecordedAt,
-		IsAlert:    response.IsAlert,
-		CreatedAt:  response.CreatedAt,
-	}
-
-	if response.QualityScore != nil {
-		resp.QualityScore = *response.QualityScore
+		DeviceId:     response.DeviceID,
+		SensorType:   response.SensorType,
+		Value:        response.Value,
+		Unit:         response.Unit,
+		RecordedAt:   timestamppb.New(response.RecordedAt),
+		IsAlert:      response.IsAlert,
+		CreatedAt:    timestamppb.New(response.CreatedAt),
+		QualityScore: response.QualityScore,
 	}
 
 	return resp

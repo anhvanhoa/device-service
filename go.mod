@@ -4,7 +4,7 @@ go 1.25.0
 
 require (
 	github.com/anhvanhoa/service-core v0.0.0-20251002070927-668b593b5c06
-	github.com/anhvanhoa/sf-proto v0.0.0-20251007083511-a24745e493d7
+	github.com/anhvanhoa/sf-proto v0.0.0-20251007074801-c5654607c596
 	github.com/go-pg/pg/v10 v10.15.0
 	github.com/spf13/viper v1.21.0
 	go.uber.org/zap v1.27.0

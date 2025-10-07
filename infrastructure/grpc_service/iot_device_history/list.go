@@ -3,6 +3,7 @@ package iot_device_history_service
 import (
 	"context"
 	"device-service/domain/usecase/iot_device_history"
+	"fmt"
 
 	"github.com/anhvanhoa/service-core/common"
 	common_proto "github.com/anhvanhoa/sf-proto/gen/common/v1"
@@ -25,8 +26,27 @@ func (s *IoTDeviceHistoryService) convertRequestListIoTDeviceHistory(req *proto_
 		PageSize: int(req.Pagination.PageSize),
 	}
 
+	filters := iot_device_history.IoTDeviceHistoryFilters{
+		DeviceID:    req.Filters.DeviceId,
+		Action:      req.Filters.Action,
+		PerformedBy: req.Filters.PerformedBy,
+	}
+
+	if req.Filters.StartDate != nil {
+		startDate := req.Filters.StartDate.AsTime()
+		filters.StartDate = &startDate
+	}
+
+	if req.Filters.EndDate != nil {
+		endDate := req.Filters.EndDate.AsTime()
+		filters.EndDate = &endDate
+	}
+
+	fmt.Println("filters", filters)
+
 	return &iot_device_history.ListIoTDeviceHistoryRequest{
 		Pagination: pagination,
+		Filters:    filters,
 	}
 }
 

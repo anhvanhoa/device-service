@@ -1,6 +1,6 @@
 NAME_DB=device_service_db
 PORT_DB=5432
-USER_DB=pg
+USER_DB=postgres
 PASSWORD_DB=123456
 HOST_DB=localhost
 SSL_MODE=disable

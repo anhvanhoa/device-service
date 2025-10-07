@@ -6,6 +6,7 @@ import (
 
 	proto_iot_device_history "github.com/anhvanhoa/sf-proto/gen/iot_device_history/v1"
 	"google.golang.org/protobuf/types/known/structpb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func (s *IoTDeviceHistoryService) CreateIoTDeviceHistory(ctx context.Context, req *proto_iot_device_history.CreateIoTDeviceHistoryRequest) (*proto_iot_device_history.CreateIoTDeviceHistoryResponse, error) {
@@ -41,7 +42,7 @@ func (s *IoTDeviceHistoryService) convertResponseCreateIoTDeviceHistory(response
 	resp := &proto_iot_device_history.CreateIoTDeviceHistoryResponse{
 		DeviceId:    response.DeviceID,
 		Action:      response.Action,
-		ActionDate:  response.ActionDate,
+		ActionDate:  timestamppb.New(response.ActionDate),
 		PerformedBy: response.PerformedBy,
 	}
 

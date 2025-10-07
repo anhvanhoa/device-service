@@ -4,6 +4,7 @@ import (
 	"context"
 	"device-service/domain/entity"
 	"device-service/domain/repository"
+	"time"
 )
 
 type CreateSensorDataRequest struct {
@@ -21,10 +22,10 @@ type CreateSensorDataResponse struct {
 	SensorType   string
 	Value        float64
 	Unit         string
-	RecordedAt   string
+	RecordedAt   time.Time
 	IsAlert      bool
-	QualityScore *float64
-	CreatedAt    string
+	QualityScore float64
+	CreatedAt    time.Time
 }
 
 type CreateSensorDataUsecase struct {
@@ -56,11 +57,11 @@ func (u *CreateSensorDataUsecase) Execute(ctx context.Context, req *CreateSensor
 
 	sensorData := &entity.SensorData{
 		DeviceID:     req.DeviceID,
-		SensorType:   &req.SensorType,
-		Value:        &req.Value,
-		Unit:         &req.Unit,
+		SensorType:   req.SensorType,
+		Value:        req.Value,
+		Unit:         req.Unit,
 		IsAlert:      req.IsAlert,
-		QualityScore: &qualityScore,
+		QualityScore: qualityScore,
 	}
 
 	err := u.sensorDataRepo.Create(ctx, sensorData)
@@ -71,12 +72,12 @@ func (u *CreateSensorDataUsecase) Execute(ctx context.Context, req *CreateSensor
 	return &CreateSensorDataResponse{
 		ID:           sensorData.ID,
 		DeviceID:     sensorData.DeviceID,
-		SensorType:   *sensorData.SensorType,
-		Value:        *sensorData.Value,
-		Unit:         *sensorData.Unit,
-		RecordedAt:   sensorData.RecordedAt.Format("2006-01-02T15:04:05Z07:00"),
+		SensorType:   sensorData.SensorType,
+		Value:        sensorData.Value,
+		Unit:         sensorData.Unit,
+		RecordedAt:   sensorData.RecordedAt,
 		IsAlert:      sensorData.IsAlert,
 		QualityScore: sensorData.QualityScore,
-		CreatedAt:    sensorData.CreatedAt.Format("2006-01-02T15:04:05Z07:00"),
+		CreatedAt:    sensorData.CreatedAt,
 	}, nil
 }

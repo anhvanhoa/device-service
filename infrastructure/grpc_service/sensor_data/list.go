@@ -7,6 +7,7 @@ import (
 	"github.com/anhvanhoa/service-core/common"
 	common_proto "github.com/anhvanhoa/sf-proto/gen/common/v1"
 	proto_sensor_data "github.com/anhvanhoa/sf-proto/gen/sensor_data/v1"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func (s *SensorDataService) ListSensorData(ctx context.Context, req *proto_sensor_data.ListSensorDataRequest) (*proto_sensor_data.ListSensorDataResponse, error) {
@@ -33,18 +34,15 @@ func (s *SensorDataService) convertResponseListSensorData(response *sensor_data.
 	sensorDataList := make([]*proto_sensor_data.SensorData, len(response.Data))
 	for i, item := range response.Data {
 		sensorData := &proto_sensor_data.SensorData{
-			Id:         item.ID,
-			DeviceId:   item.DeviceID,
-			SensorType: item.SensorType,
-			Value:      item.Value,
-			Unit:       item.Unit,
-			RecordedAt: item.RecordedAt,
-			IsAlert:    item.IsAlert,
-			CreatedAt:  item.CreatedAt,
-		}
-
-		if item.QualityScore != nil {
-			sensorData.QualityScore = *item.QualityScore
+			Id:           item.ID,
+			DeviceId:     item.DeviceID,
+			SensorType:   item.SensorType,
+			Value:        item.Value,
+			Unit:         item.Unit,
+			IsAlert:      item.IsAlert,
+			RecordedAt:   timestamppb.New(item.RecordedAt),
+			CreatedAt:    timestamppb.New(item.CreatedAt),
+			QualityScore: item.QualityScore,
 		}
 
 		sensorDataList[i] = sensorData

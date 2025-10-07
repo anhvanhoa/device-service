@@ -31,12 +31,12 @@ type SensorData struct {
 	tableName    struct{} `pg:"sensor_data"`
 	ID           string
 	DeviceID     string
-	SensorType   *string
-	Value        *float64
-	Unit         *string
+	SensorType   string
+	Value        float64
+	Unit         string
 	RecordedAt   time.Time
 	IsAlert      bool
-	QualityScore *float64
+	QualityScore float64
 	CreatedAt    time.Time
 }
 
@@ -50,34 +50,22 @@ func (s *SensorData) SetAlert(isAlert bool) {
 
 func (s *SensorData) SetQualityScore(score float64) {
 	if score >= 0 && score <= 1 {
-		s.QualityScore = &score
+		s.QualityScore = score
 	}
 }
 
 func (s *SensorData) IsHighQuality() bool {
-	if s.QualityScore == nil {
-		return false
-	}
-	return *s.QualityScore >= 0.8
+	return s.QualityScore >= 0.8
 }
 
 func (s *SensorData) IsLowQuality() bool {
-	if s.QualityScore == nil {
-		return false
-	}
-	return *s.QualityScore < 0.5
+	return s.QualityScore < 0.5
 }
 
 func (s *SensorData) GetSensorTypeEnum() SensorType {
-	if s.SensorType == nil {
-		return ""
-	}
-	return SensorType(*s.SensorType)
+	return SensorType(s.SensorType)
 }
 
 func (s *SensorData) GetUnitEnum() SensorUnit {
-	if s.Unit == nil {
-		return ""
-	}
-	return SensorUnit(*s.Unit)
+	return SensorUnit(s.Unit)
 }

@@ -29,10 +29,11 @@ type IoTDeviceHistoryItem struct {
 }
 
 type IoTDeviceHistoryFilters struct {
-	DeviceID  *string
-	Action    *string
-	StartDate *string
-	EndDate   *string
+	DeviceID    string
+	Action      string
+	StartDate   *time.Time
+	EndDate     *time.Time
+	PerformedBy string
 }
 
 type ListIoTDeviceHistoryUsecase struct {
@@ -57,28 +58,22 @@ func (u *ListIoTDeviceHistoryUsecase) Execute(ctx context.Context, req *ListIoTD
 	}
 
 	filters := repository.IoTDeviceHistoryFilters{
-		DeviceID: req.Filters.DeviceID,
+		DeviceID:    req.Filters.DeviceID,
+		Action:      entity.DeviceAction(req.Filters.Action),
+		PerformedBy: req.Filters.PerformedBy,
 	}
 
-	if req.Filters.Action != nil {
-		action := entity.DeviceAction(*req.Filters.Action)
-		filters.Action = &action
+	if req.Filters.Action != "" {
+		action := entity.DeviceAction(req.Filters.Action)
+		filters.Action = action
 	}
 
 	if req.Filters.StartDate != nil {
-		startDate, err := time.Parse("2006-01-02", *req.Filters.StartDate)
-		if err != nil {
-			return nil, ErrInvalidDateFormat
-		}
-		filters.StartDate = &startDate
+		filters.StartDate = req.Filters.StartDate
 	}
 
 	if req.Filters.EndDate != nil {
-		endDate, err := time.Parse("2006-01-02", *req.Filters.EndDate)
-		if err != nil {
-			return nil, ErrInvalidDateFormat
-		}
-		filters.EndDate = &endDate
+		filters.EndDate = req.Filters.EndDate
 	}
 
 	histories, total, err := u.deviceHistoryRepo.List(ctx, filters, pagination)
