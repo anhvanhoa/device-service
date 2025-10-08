@@ -49,7 +49,7 @@ func StartGRPCServer() {
 		sensorDataServer,
 	)
 
-	mqttService := mqtt_service.NewMqttService(app.Repo, app.Helper, app.MQ)
+	mqttService := mqtt_service.NewMqttService(app.Repo, app.Helper, app.MQ, log)
 	mqttService.RunIoTDevice()
 
 	ctx, cancel := context.WithCancel(context.Background())
