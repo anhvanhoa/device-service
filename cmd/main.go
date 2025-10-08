@@ -8,6 +8,7 @@ import (
 	iot_device_service "device-service/infrastructure/grpc_service/iot_device"
 	iot_device_history_service "device-service/infrastructure/grpc_service/iot_device_history"
 	sensor_data_service "device-service/infrastructure/grpc_service/sensor_data"
+	mqtt_service "device-service/infrastructure/mqtt"
 
 	"github.com/anhvanhoa/service-core/domain/discovery"
 )
@@ -47,6 +48,9 @@ func StartGRPCServer() {
 		iotDeviceHistoryServer,
 		sensorDataServer,
 	)
+
+	mqttService := mqtt_service.NewMqttService(app.Repo, app.Helper, app.MQ)
+	mqttService.RunIoTDevice()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()

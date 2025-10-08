@@ -11,12 +11,8 @@ github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751/go.mod h1:LOuy
 github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
 github.com/alecthomas/units v0.0.0-20190717042225-c3de453c63f4/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
 github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d/go.mod h1:rBZYJk541a8SKzHPHnH3zbiI+7dagKZ0cgpgrD7Fyho=
-github.com/anhvanhoa/service-core v0.0.0-20251002070927-668b593b5c06 h1:eBrQRJzD9YZdosbl4WJBgMbXUqwq7LthMObc0Jg2ZD0=
-github.com/anhvanhoa/service-core v0.0.0-20251002070927-668b593b5c06/go.mod h1:ciFblCCLxZkKTDeoMnuxRLsRdIVu1pOt4mjmLZZIPOg=
-github.com/anhvanhoa/sf-proto v0.0.0-20251007070305-5a24e30a8a9a h1:k5YvF++cRNjuT7zzvqjOuNRr+OsASxZWLPRM8xm7gwY=
-github.com/anhvanhoa/sf-proto v0.0.0-20251007070305-5a24e30a8a9a/go.mod h1:YYuFxAb7+Uqly1h5HLa0Ud7krxxrt1QAlCLuLBaqLYg=
-github.com/anhvanhoa/sf-proto v0.0.0-20251007074002-bd5c36912b97 h1:BeSsmE/K5IsLxQQfVjBxHoP6G3+GqYdjy+tqHab/jJI=
-github.com/anhvanhoa/sf-proto v0.0.0-20251007074002-bd5c36912b97/go.mod h1:YYuFxAb7+Uqly1h5HLa0Ud7krxxrt1QAlCLuLBaqLYg=
+github.com/anhvanhoa/service-core v0.0.0-20251008083007-3a4d96fe5f88 h1:i9BB89ByXU16prO/iOKbWxrKi9lQtTmkT1MQTYN4oaI=
+github.com/anhvanhoa/service-core v0.0.0-20251008083007-3a4d96fe5f88/go.mod h1:OE5O2WZPf9uv7mwzYPV+x7gD2wxdlsrrPOTOTHT4Imw=
 github.com/anhvanhoa/sf-proto v0.0.0-20251007074801-c5654607c596 h1:Xus5BHD7xvzyso9+YaWmfMLV9diE5XkTjM2N9iv+0XQ=
 github.com/anhvanhoa/sf-proto v0.0.0-20251007074801-c5654607c596/go.mod h1:YYuFxAb7+Uqly1h5HLa0Ud7krxxrt1QAlCLuLBaqLYg=
 github.com/antlr4-go/antlr/v4 v4.13.1 h1:SqQKkuVZ+zWkMMNkjy5FZe5mr5WURWnlpmOuzYWrPrQ=
@@ -33,6 +29,8 @@ github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSs
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc h1:U9qPSI2PIWSS1VwoXQT9A3Wy9MM3WgvqSxFWenqJduM=
 github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/eclipse/paho.mqtt.golang v1.5.1 h1:/VSOv3oDLlpqR2Epjn1Q7b2bSTplJIeV2ISgCl2W7nE=
+github.com/eclipse/paho.mqtt.golang v1.5.1/go.mod h1:1/yJCneuyOoCOzKSsOTUc0AJfpsItBGWvYpBLimhArU=
 github.com/fatih/color v1.13.0/go.mod h1:kLAiJbzzSOZDVNGyDpeOxJ47H46qBXwg5ILebYFFOfk=
 github.com/fatih/color v1.18.0 h1:S8gINlzdQ840/4pfAwic/ZE0djQEH3wM94VfqLTZcOM=
 github.com/fatih/color v1.18.0/go.mod h1:4FelSpRwEGDpQ12mAdzqdOukCy4u8WUtOY6lkT/6HfU=
@@ -84,6 +82,8 @@ github.com/google/go-cmp v0.7.0/go.mod h1:pXiqmnSA92OHEEa9HXL2W4E7lf9JzCmGVUdgjX
 github.com/google/gofuzz v1.0.0/go.mod h1:dBl0BpW6vV/+mYPU4Po3pmUjxk6FQPldtuIdl/M65Eg=
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
 github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+github.com/gorilla/websocket v1.5.3 h1:saDtZ6Pbx/0u+bgYQ3q96pZgCzfhKXGPqt7kZ72aNNg=
+github.com/gorilla/websocket v1.5.3/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.2 h1:sGm2vDRFUrQJO/Veii4h4zG2vvqG6uWNkBHSTqXOZk0=
 github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.2/go.mod h1:wd1YpapPLivG6nQgbf7ZkG1hhSOXDhhn4MLTknx2aAc=
 github.com/hashicorp/consul/api v1.32.4 h1:xNe27KcBNYHbqWX/6c6WTAlPoZlZv8onDEySmjcspO0=

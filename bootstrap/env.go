@@ -16,6 +16,12 @@ type Env struct {
 	HostGprc      string `mapstructure:"host_grpc"`
 	IntervalCheck string `mapstructure:"interval_check"`
 	TimeoutCheck  string `mapstructure:"timeout_check"`
+
+	UrlMqtt      string `mapstructure:"url_mqtt"`
+	UsernameMqtt string `mapstructure:"username_mqtt"`
+	PasswordMqtt string `mapstructure:"password_mqtt"`
+	ClientIdMqtt string `mapstructure:"client_id_mqtt"`
+	TlsMqtt      bool   `mapstructure:"tls_mqtt"`
 }
 
 func NewEnv(env any) {
