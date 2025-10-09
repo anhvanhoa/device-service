@@ -8,4 +8,5 @@ type IoTDeviceUsecase interface {
 	Update(ctx context.Context, req *UpdateIoTDeviceRequest) (*UpdateIoTDeviceResponse, error)
 	Delete(ctx context.Context, req *DeleteIoTDeviceRequest) (*DeleteIoTDeviceResponse, error)
 	List(ctx context.Context, req *ListIoTDeviceRequest) (*ListIoTDeviceResponse, error)
+	Control(ctx context.Context, req *ControlIoTDeviceRequest) (*ControlIoTDeviceResponse, error)
 }

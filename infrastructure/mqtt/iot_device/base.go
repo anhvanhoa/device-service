@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/anhvanhoa/service-core/domain/log"
+	"github.com/anhvanhoa/service-core/domain/mq"
 	"github.com/anhvanhoa/service-core/utils"
 )
 
@@ -20,9 +21,9 @@ type IoTDeviceMQTT struct {
 	log              *log.LogGRPCImpl
 }
 
-func NewIoTDeviceMQTT(repo repo.Repositories, helper utils.Helper, log *log.LogGRPCImpl) IoTDeviceMQTTService {
+func NewIoTDeviceMQTT(repo repo.Repositories, helper utils.Helper, mq mq.MQI, log *log.LogGRPCImpl) IoTDeviceMQTTService {
 	return &IoTDeviceMQTT{
-		iotDeviceUsecase: iot_device.NewIoTDeviceUsecase(repo.IoTDevice(), helper),
+		iotDeviceUsecase: iot_device.NewIoTDeviceUsecase(repo.IoTDevice(), helper, mq),
 		log:              log,
 	}
 }

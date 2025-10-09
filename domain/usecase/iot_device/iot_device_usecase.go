@@ -4,24 +4,27 @@ import (
 	"context"
 	"device-service/domain/repository"
 
+	"github.com/anhvanhoa/service-core/domain/mq"
 	"github.com/anhvanhoa/service-core/utils"
 )
 
 type IoTDeviceUsecaseImpl struct {
-	createUsecase *CreateIoTDeviceUsecase
-	getUsecase    *GetIoTDeviceUsecase
-	updateUsecase *UpdateIoTDeviceUsecase
-	deleteUsecase *DeleteIoTDeviceUsecase
-	listUsecase   *ListIoTDeviceUsecase
+	createUsecase  *CreateIoTDeviceUsecase
+	getUsecase     *GetIoTDeviceUsecase
+	updateUsecase  *UpdateIoTDeviceUsecase
+	deleteUsecase  *DeleteIoTDeviceUsecase
+	listUsecase    *ListIoTDeviceUsecase
+	controlUsecase *ControlIoTDeviceUsecase
 }
 
-func NewIoTDeviceUsecase(iotDeviceRepo repository.IoTDeviceRepository, helper utils.Helper) IoTDeviceUsecase {
+func NewIoTDeviceUsecase(iotDeviceRepo repository.IoTDeviceRepository, helper utils.Helper, mq mq.MQI) IoTDeviceUsecase {
 	return &IoTDeviceUsecaseImpl{
-		createUsecase: NewCreateIoTDeviceUsecase(iotDeviceRepo),
-		getUsecase:    NewGetIoTDeviceUsecase(iotDeviceRepo),
-		updateUsecase: NewUpdateIoTDeviceUsecase(iotDeviceRepo),
-		deleteUsecase: NewDeleteIoTDeviceUsecase(iotDeviceRepo),
-		listUsecase:   NewListIoTDeviceUsecase(iotDeviceRepo, helper),
+		createUsecase:  NewCreateIoTDeviceUsecase(iotDeviceRepo),
+		getUsecase:     NewGetIoTDeviceUsecase(iotDeviceRepo),
+		updateUsecase:  NewUpdateIoTDeviceUsecase(iotDeviceRepo),
+		deleteUsecase:  NewDeleteIoTDeviceUsecase(iotDeviceRepo),
+		listUsecase:    NewListIoTDeviceUsecase(iotDeviceRepo, helper),
+		controlUsecase: NewControlIoTDeviceUsecase(iotDeviceRepo, mq),
 	}
 }
 
@@ -43,4 +46,8 @@ func (u *IoTDeviceUsecaseImpl) Delete(ctx context.Context, req *DeleteIoTDeviceR
 
 func (u *IoTDeviceUsecaseImpl) List(ctx context.Context, req *ListIoTDeviceRequest) (*ListIoTDeviceResponse, error) {
 	return u.listUsecase.Execute(ctx, req)
+}
+
+func (u *IoTDeviceUsecaseImpl) Control(ctx context.Context, req *ControlIoTDeviceRequest) (*ControlIoTDeviceResponse, error) {
+	return u.controlUsecase.Execute(ctx, req)
 }

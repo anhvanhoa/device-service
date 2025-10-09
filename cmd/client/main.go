@@ -629,6 +629,38 @@ func (c *DeviceServiceClient) TestDeleteIotDevice() {
 	fmt.Printf("Thành công: %t\n", resp.Success)
 }
 
+func (c *DeviceServiceClient) TestControlIotDevice() {
+	fmt.Println("\n=== Kiểm thử Điều khiển Thiết bị IoT ===")
+
+	reader := bufio.NewReader(os.Stdin)
+
+	fmt.Print("Nhập ID thiết bị IoT cần điều khiển: ")
+	id, _ := reader.ReadString('\n')
+	id = cleanInput(id)
+
+	fmt.Print("Nhập hành động (on/off/toggle/reset): ")
+	action, _ := reader.ReadString('\n')
+	action = cleanInput(action)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	resp, err := c.iotDeviceClient.ControlIoTDevice(ctx, &proto_iot_device.ControlIoTDeviceRequest{
+		Id:     id,
+		Action: action,
+	})
+	if err != nil {
+		fmt.Printf("Error calling ControlIoTDevice: %v\n", err)
+		return
+	}
+
+	fmt.Printf("Kết quả điều khiển thiết bị IoT:\n")
+	fmt.Printf("ID: %s\n", resp.Id)
+	fmt.Printf("Trạng thái: %s\n", resp.Status)
+	fmt.Printf("Hành động: %s\n", resp.Action)
+	fmt.Printf("Thông báo: %s\n", resp.Message)
+}
+
 // IoT Device History Service Tests
 func (c *DeviceServiceClient) TestCreateIotDeviceHistory() {
 	fmt.Println("\n=== Kiểm thử Tạo Lịch sử Thiết bị IoT ===")
@@ -1098,6 +1130,7 @@ func printIotDeviceMenu() {
 	fmt.Println("3. Liệt kê thiết bị IoT")
 	fmt.Println("4. Cập nhật thiết bị IoT")
 	fmt.Println("5. Xóa thiết bị IoT")
+	fmt.Println("6. Điều khiển thiết bị IoT")
 	fmt.Println("0. Quay lại menu chính")
 	fmt.Print("Nhập lựa chọn của bạn: ")
 }
@@ -1190,6 +1223,8 @@ func main() {
 					client.TestUpdateIotDevice()
 				case "5":
 					client.TestDeleteIotDevice()
+				case "6":
+					client.TestControlIotDevice()
 				case "0":
 				default:
 					fmt.Println("Invalid choice. Please try again.")

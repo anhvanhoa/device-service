@@ -21,7 +21,7 @@ type MqttServiceImpl struct {
 }
 
 func NewMqttService(repo repo.Repositories, helper utils.Helper, mq mq.MQI, log *log.LogGRPCImpl) MqttService {
-	iotDeviceMQTT := iot_device_mqtt.NewIoTDeviceMQTT(repo, helper, log)
+	iotDeviceMQTT := iot_device_mqtt.NewIoTDeviceMQTT(repo, helper, mq, log)
 	return &MqttServiceImpl{iotDeviceMQTT: iotDeviceMQTT, mq: mq, log: log}
 }
 

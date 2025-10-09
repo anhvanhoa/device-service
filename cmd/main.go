@@ -37,7 +37,7 @@ func StartGRPCServer() {
 	discovery.Register()
 
 	deviceTypeServer := device_type_service.NewDeviceTypeService(app.Repo.DeviceType(), app.Helper)
-	iotDeviceServer := iot_device_service.NewIoTDeviceService(app.Repo.IoTDevice(), app.Helper)
+	iotDeviceServer := iot_device_service.NewIoTDeviceService(app.Repo.IoTDevice(), app.Helper, app.MQ)
 	iotDeviceHistoryServer := iot_device_history_service.NewIoTDeviceHistoryService(app.Repo.IoTDeviceHistory(), app.Helper)
 	sensorDataServer := sensor_data_service.NewSensorDataService(app.Repo.SensorData(), app.Helper)
 
