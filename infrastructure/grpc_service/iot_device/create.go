@@ -20,15 +20,19 @@ func (s *IoTDeviceService) CreateIoTDevice(ctx context.Context, req *proto_iot_d
 
 func (s *IoTDeviceService) convertRequestCreateIoTDevice(req *proto_iot_device.CreateIoTDeviceRequest) *iot_device.CreateIoTDeviceRequest {
 	request := &iot_device.CreateIoTDeviceRequest{
-		DeviceName:    req.DeviceName,
-		DeviceTypeID:  req.DeviceTypeId,
-		Model:         req.Model,
-		MacAddress:    req.MacAddress,
-		IPAddress:     req.IpAddress,
-		GreenhouseID:  req.GreenhouseId,
-		GrowingZoneID: req.GrowingZoneId,
-		BatteryLevel:  []int{int(req.BatteryLevel)}[0],
-		CreatedBy:     req.CreatedBy,
+		DeviceName:         req.DeviceName,
+		DeviceTypeID:       req.DeviceTypeId,
+		Model:              req.Model,
+		MacAddress:         req.MacAddress,
+		IPAddress:          req.IpAddress,
+		GreenhouseID:       req.GreenhouseId,
+		GrowingZoneID:      req.GrowingZoneId,
+		BatteryLevel:       int(req.BatteryLevel),
+		CreatedBy:          req.CreatedBy,
+		ReadInterval:       int(req.ReadInterval),
+		AlertEnabled:       req.AlertEnabled,
+		AlertThresholdHigh: req.AlertThresholdHigh,
+		AlertThresholdLow:  req.AlertThresholdLow,
 	}
 
 	if req.InstallationDate != nil {
@@ -36,9 +40,6 @@ func (s *IoTDeviceService) convertRequestCreateIoTDevice(req *proto_iot_device.C
 		request.InstallationDate = &installationDate
 	}
 
-	if req.Configuration != nil {
-		request.Configuration = req.Configuration.AsMap()
-	}
 	if req.DefaultConfig != nil {
 		request.DefaultConfig = req.DefaultConfig.AsMap()
 	}
@@ -61,11 +62,6 @@ func (s *IoTDeviceService) convertResponseCreateIoTDevice(response *iot_device.C
 		CreatedAt:     timestamppb.New(response.CreatedAt),
 	}
 
-	if response.Configuration != nil {
-		if configStruct, err := structpb.NewStruct(response.Configuration); err == nil {
-			resp.Configuration = configStruct
-		}
-	}
 	if response.DefaultConfig != nil {
 		if defaultConfigStruct, err := structpb.NewStruct(response.DefaultConfig); err == nil {
 			resp.DefaultConfig = defaultConfigStruct

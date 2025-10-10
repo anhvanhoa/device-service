@@ -56,8 +56,11 @@ type IoTDevice struct {
 	LastMaintenanceDate *time.Time
 	BatteryLevel        int
 	Status              DeviceStatus
-	Configuration       JSONB
 	DefaultConfig       JSONB
+	ReadInterval        int
+	AlertEnabled        bool
+	AlertThresholdHigh  float64
+	AlertThresholdLow   float64
 	CreatedBy           string
 	CreatedAt           time.Time
 	UpdatedAt           *time.Time
@@ -88,12 +91,6 @@ func (d *IoTDevice) UpdateBatteryLevel(level int) {
 
 func (d *IoTDevice) UpdateStatus(status DeviceStatus) {
 	d.Status = status
-	now := time.Now()
-	d.UpdatedAt = &now
-}
-
-func (d *IoTDevice) UpdateConfiguration(config JSONB) {
-	d.Configuration = config
 	now := time.Now()
 	d.UpdatedAt = &now
 }

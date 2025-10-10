@@ -18,20 +18,24 @@ type ListIoTDeviceRequest struct {
 type ListIoTDeviceResponse common.PaginationResult[IoTDeviceItem]
 
 type IoTDeviceItem struct {
-	ID               string
-	DeviceName       string
-	DeviceTypeID     string
-	Model            string
-	MacAddress       string
-	IPAddress        string
-	GreenhouseID     string
-	GrowingZoneID    string
-	InstallationDate *time.Time
-	CreatedBy        string
-	BatteryLevel     int
-	Status           string
-	Configuration    map[string]any
-	CreatedAt        time.Time
+	ID                 string
+	DeviceName         string
+	DeviceTypeID       string
+	Model              string
+	MacAddress         string
+	IPAddress          string
+	GreenhouseID       string
+	GrowingZoneID      string
+	InstallationDate   *time.Time
+	CreatedBy          string
+	BatteryLevel       int
+	Status             string
+	DefaultConfig      map[string]any
+	ReadInterval       int
+	AlertEnabled       bool
+	AlertThresholdHigh float64
+	AlertThresholdLow  float64
+	CreatedAt          time.Time
 }
 
 type IoTDeviceFilters struct {
@@ -83,18 +87,22 @@ func (u *ListIoTDeviceUsecase) Execute(ctx context.Context, req *ListIoTDeviceRe
 	items := make([]IoTDeviceItem, len(devices))
 	for i, device := range devices {
 		item := IoTDeviceItem{
-			ID:            device.ID,
-			DeviceName:    device.DeviceName,
-			DeviceTypeID:  device.DeviceTypeID,
-			Model:         device.Model,
-			MacAddress:    device.MacAddress,
-			IPAddress:     device.IPAddress,
-			GreenhouseID:  device.GreenhouseID,
-			GrowingZoneID: device.GrowingZoneID,
-			BatteryLevel:  device.BatteryLevel,
-			Status:        string(device.Status),
-			Configuration: map[string]any(device.Configuration),
-			CreatedAt:     device.CreatedAt,
+			ID:                 device.ID,
+			DeviceName:         device.DeviceName,
+			DeviceTypeID:       device.DeviceTypeID,
+			Model:              device.Model,
+			MacAddress:         device.MacAddress,
+			IPAddress:          device.IPAddress,
+			GreenhouseID:       device.GreenhouseID,
+			GrowingZoneID:      device.GrowingZoneID,
+			BatteryLevel:       device.BatteryLevel,
+			Status:             string(device.Status),
+			DefaultConfig:      map[string]any(device.DefaultConfig),
+			ReadInterval:       device.ReadInterval,
+			AlertEnabled:       device.AlertEnabled,
+			AlertThresholdHigh: device.AlertThresholdHigh,
+			AlertThresholdLow:  device.AlertThresholdLow,
+			CreatedAt:          device.CreatedAt,
 		}
 
 		if device.InstallationDate != nil {

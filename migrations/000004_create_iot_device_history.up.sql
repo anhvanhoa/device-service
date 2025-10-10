@@ -1,12 +1,12 @@
 -- 5b. BẢNG LỊCH SỬ THIẾT BỊ
 CREATE TABLE iot_device_history (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    device_id UUID NOT NULL,
+    id VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+    device_id VARCHAR(36) NOT NULL,
     action VARCHAR(50) CHECK (action IN ('install', 'update_config', 'firmware_update', 'relocate', 'maintenance', 'deactivate', 'reactivate')),
     old_value JSONB,
     new_value JSONB,
     action_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    performed_by UUID,
+    performed_by VARCHAR(36),
     notes TEXT,
 
     FOREIGN KEY (device_id) REFERENCES iot_devices(id) ON DELETE CASCADE

@@ -1,6 +1,6 @@
 -- Bảng loại thiết bị
 CREATE TABLE device_types (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
     type_code VARCHAR(50) UNIQUE,
     description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

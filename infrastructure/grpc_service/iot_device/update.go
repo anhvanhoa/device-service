@@ -20,16 +20,20 @@ func (s *IoTDeviceService) UpdateIoTDevice(ctx context.Context, req *proto_iot_d
 
 func (s *IoTDeviceService) convertRequestUpdateIoTDevice(req *proto_iot_device.UpdateIoTDeviceRequest) *iot_device.UpdateIoTDeviceRequest {
 	request := &iot_device.UpdateIoTDeviceRequest{
-		ID:            req.Id,
-		DeviceName:    req.DeviceName,
-		DeviceTypeID:  req.DeviceTypeId,
-		Model:         req.Model,
-		MacAddress:    req.MacAddress,
-		IPAddress:     req.IpAddress,
-		GreenhouseID:  req.GreenhouseId,
-		GrowingZoneID: req.GrowingZoneId,
-		BatteryLevel:  []int{int(req.BatteryLevel)}[0],
-		Status:        req.Status,
+		ID:                 req.Id,
+		DeviceName:         req.DeviceName,
+		DeviceTypeID:       req.DeviceTypeId,
+		Model:              req.Model,
+		MacAddress:         req.MacAddress,
+		IPAddress:          req.IpAddress,
+		GreenhouseID:       req.GreenhouseId,
+		GrowingZoneID:      req.GrowingZoneId,
+		BatteryLevel:       int(req.BatteryLevel),
+		ReadInterval:       int(req.ReadInterval),
+		AlertEnabled:       req.AlertEnabled,
+		AlertThresholdHigh: req.AlertThresholdHigh,
+		AlertThresholdLow:  req.AlertThresholdLow,
+		Status:             req.Status,
 	}
 
 	if req.InstallationDate != nil {
@@ -41,9 +45,6 @@ func (s *IoTDeviceService) convertRequestUpdateIoTDevice(req *proto_iot_device.U
 		request.LastMaintenanceDate = &lastMaintenanceDate
 	}
 
-	if req.Configuration != nil {
-		request.Configuration = req.Configuration.AsMap()
-	}
 	if req.DefaultConfig != nil {
 		request.DefaultConfig = req.DefaultConfig.AsMap()
 	}
@@ -53,19 +54,23 @@ func (s *IoTDeviceService) convertRequestUpdateIoTDevice(req *proto_iot_device.U
 
 func (s *IoTDeviceService) convertResponseUpdateIoTDevice(response *iot_device.UpdateIoTDeviceResponse) *proto_iot_device.UpdateIoTDeviceResponse {
 	device := &proto_iot_device.IoTDevice{
-		Id:            response.ID,
-		DeviceName:    response.DeviceName,
-		DeviceTypeId:  response.DeviceTypeID,
-		Model:         response.Model,
-		MacAddress:    response.MacAddress,
-		IpAddress:     response.IPAddress,
-		GreenhouseId:  response.GreenhouseID,
-		GrowingZoneId: response.GrowingZoneID,
-		BatteryLevel:  int32(response.BatteryLevel),
-		Status:        response.Status,
-		CreatedBy:     response.CreatedBy,
-		CreatedAt:     timestamppb.New(response.CreatedAt),
-		UpdatedAt:     timestamppb.New(*response.UpdatedAt),
+		Id:                 response.ID,
+		DeviceName:         response.DeviceName,
+		DeviceTypeId:       response.DeviceTypeID,
+		Model:              response.Model,
+		MacAddress:         response.MacAddress,
+		IpAddress:          response.IPAddress,
+		GreenhouseId:       response.GreenhouseID,
+		GrowingZoneId:      response.GrowingZoneID,
+		BatteryLevel:       int32(response.BatteryLevel),
+		Status:             response.Status,
+		ReadInterval:       int32(response.ReadInterval),
+		AlertEnabled:       response.AlertEnabled,
+		AlertThresholdHigh: response.AlertThresholdHigh,
+		AlertThresholdLow:  response.AlertThresholdLow,
+		CreatedBy:          response.CreatedBy,
+		CreatedAt:          timestamppb.New(response.CreatedAt),
+		UpdatedAt:          timestamppb.New(*response.UpdatedAt),
 	}
 
 	if response.InstallationDate != nil {
@@ -75,11 +80,6 @@ func (s *IoTDeviceService) convertResponseUpdateIoTDevice(response *iot_device.U
 		device.LastMaintenanceDate = timestamppb.New(*response.LastMaintenanceDate)
 	}
 
-	if response.Configuration != nil {
-		if configStruct, err := structpb.NewStruct(response.Configuration); err == nil {
-			device.Configuration = configStruct
-		}
-	}
 	if response.DefaultConfig != nil {
 		if defaultConfigStruct, err := structpb.NewStruct(response.DefaultConfig); err == nil {
 			device.DefaultConfig = defaultConfigStruct

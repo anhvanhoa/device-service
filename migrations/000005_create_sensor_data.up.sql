@@ -1,7 +1,7 @@
 -- 6. BẢNG DỮ LIỆU CẢM BIẾN
 CREATE TABLE sensor_data (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    device_id UUID NOT NULL,
+    id VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+    device_id VARCHAR(36) NOT NULL,
     sensor_type VARCHAR(100),
     value DECIMAL(12,4),
     unit VARCHAR(20),

@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"context"
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -271,6 +270,10 @@ func (c *DeviceServiceClient) TestCreateIotDevice() {
 
 	reader := bufio.NewReader(os.Stdin)
 
+	fmt.Print("Nhập ID thiết bị IoT: ")
+	id, _ := reader.ReadString('\n')
+	id = cleanInput(id)
+
 	fmt.Print("Nhập tên thiết bị: ")
 	deviceName, _ := reader.ReadString('\n')
 	deviceName = cleanInput(deviceName)
@@ -314,16 +317,51 @@ func (c *DeviceServiceClient) TestCreateIotDevice() {
 	growingZoneId, _ := reader.ReadString('\n')
 	growingZoneId = cleanInput(growingZoneId)
 
-	fmt.Print("Nhập setting mặc định (json): ")
-	defaultConfigStr, _ := reader.ReadString('\n')
-	defaultConfigStr = cleanInput(defaultConfigStr)
-
-	var defaultConfig *structpb.Struct
-	if defaultConfigStr != "" {
-		if err := json.Unmarshal([]byte(defaultConfigStr), &defaultConfig); err != nil {
-			fmt.Printf("Error parsing default config: %v\n", err)
-			return
+	fmt.Print("Nhập khoảng đọc (ms): ")
+	readIntervalStr, _ := reader.ReadString('\n')
+	readIntervalStr = cleanInput(readIntervalStr)
+	readInterval := int32(5000)
+	if readIntervalStr != "" {
+		if b, err := strconv.Atoi(readIntervalStr); err == nil {
+			readInterval = int32(b)
 		}
+	}
+
+	fmt.Print("Bật cảnh báo: ")
+	alertEnabledStr, _ := reader.ReadString('\n')
+	alertEnabledStr = cleanInput(alertEnabledStr)
+	alertEnabled := true
+	if alertEnabledStr != "" {
+		alertEnabled = alertEnabledStr == "true"
+	}
+
+	fmt.Print("Ngưỡng cảnh báo cao: ")
+	alertThresholdHighStr, _ := reader.ReadString('\n')
+	alertThresholdHighStr = cleanInput(alertThresholdHighStr)
+	alertThresholdHigh := 0.0
+	if alertThresholdHighStr != "" {
+		if b, err := strconv.ParseFloat(alertThresholdHighStr, 64); err == nil {
+			alertThresholdHigh = b
+		}
+	}
+
+	fmt.Print("Ngưỡng cảnh báo thấp: ")
+	alertThresholdLowStr, _ := reader.ReadString('\n')
+	alertThresholdLowStr = cleanInput(alertThresholdLowStr)
+	alertThresholdLow := 0.0
+	if alertThresholdLowStr != "" {
+		if b, err := strconv.ParseFloat(alertThresholdLowStr, 64); err == nil {
+			alertThresholdLow = b
+		}
+	}
+
+	var defaultConfig *structpb.Struct = &structpb.Struct{
+		Fields: map[string]*structpb.Value{
+			"read_interval":        structpb.NewNumberValue(float64(readInterval)),
+			"alert_enabled":        structpb.NewBoolValue(alertEnabled),
+			"alert_threshold_high": structpb.NewNumberValue(alertThresholdHigh),
+			"alert_threshold_low":  structpb.NewNumberValue(alertThresholdLow),
+		},
 	}
 
 	fmt.Print("Nhập mức pin (0-100): ")
@@ -344,17 +382,22 @@ func (c *DeviceServiceClient) TestCreateIotDevice() {
 	defer cancel()
 
 	req := &proto_iot_device.CreateIoTDeviceRequest{
-		DeviceName:       deviceName,
-		DeviceTypeId:     deviceTypeId,
-		Model:            model,
-		MacAddress:       macAddress,
-		IpAddress:        ipAddress,
-		GreenhouseId:     greenhouseId,
-		GrowingZoneId:    growingZoneId,
-		InstallationDate: installationDate,
-		DefaultConfig:    defaultConfig,
-		BatteryLevel:     batteryLevel,
-		CreatedBy:        createdBy,
+		Id:                 id,
+		DeviceName:         deviceName,
+		DeviceTypeId:       deviceTypeId,
+		Model:              model,
+		MacAddress:         macAddress,
+		IpAddress:          ipAddress,
+		GreenhouseId:       greenhouseId,
+		GrowingZoneId:      growingZoneId,
+		InstallationDate:   installationDate,
+		DefaultConfig:      defaultConfig,
+		BatteryLevel:       batteryLevel,
+		CreatedBy:          createdBy,
+		ReadInterval:       readInterval,
+		AlertEnabled:       alertEnabled,
+		AlertThresholdHigh: alertThresholdHigh,
+		AlertThresholdLow:  alertThresholdLow,
 	}
 	fmt.Printf("Request: %+v\n", req)
 
@@ -567,6 +610,44 @@ func (c *DeviceServiceClient) TestUpdateIotDevice() {
 	status, _ := reader.ReadString('\n')
 	status = cleanInput(status)
 
+	fmt.Print("Nhập khoảng đọc (ms): ")
+	readIntervalStr, _ := reader.ReadString('\n')
+	readIntervalStr = cleanInput(readIntervalStr)
+	readInterval := int32(5000)
+	if readIntervalStr != "" {
+		if b, err := strconv.Atoi(readIntervalStr); err == nil {
+			readInterval = int32(b)
+		}
+	}
+
+	fmt.Print("Bật cảnh báo: ")
+	alertEnabledStr, _ := reader.ReadString('\n')
+	alertEnabledStr = cleanInput(alertEnabledStr)
+	alertEnabled := true
+	if alertEnabledStr != "" {
+		alertEnabled = alertEnabledStr == "true"
+	}
+
+	fmt.Print("Ngưỡng cảnh báo cao: ")
+	alertThresholdHighStr, _ := reader.ReadString('\n')
+	alertThresholdHighStr = cleanInput(alertThresholdHighStr)
+	alertThresholdHigh := 0.0
+	if alertThresholdHighStr != "" {
+		if b, err := strconv.ParseFloat(alertThresholdHighStr, 64); err == nil {
+			alertThresholdHigh = b
+		}
+	}
+
+	fmt.Print("Ngưỡng cảnh báo thấp: ")
+	alertThresholdLowStr, _ := reader.ReadString('\n')
+	alertThresholdLowStr = cleanInput(alertThresholdLowStr)
+	alertThresholdLow := 0.0
+	if alertThresholdLowStr != "" {
+		if b, err := strconv.ParseFloat(alertThresholdLowStr, 64); err == nil {
+			alertThresholdLow = b
+		}
+	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -583,6 +664,10 @@ func (c *DeviceServiceClient) TestUpdateIotDevice() {
 		LastMaintenanceDate: lastMaintenanceDate,
 		BatteryLevel:        batteryLevel,
 		Status:              status,
+		ReadInterval:        readInterval,
+		AlertEnabled:        alertEnabled,
+		AlertThresholdHigh:  alertThresholdHigh,
+		AlertThresholdLow:   alertThresholdLow,
 	}
 
 	fmt.Printf("Request: %+v\n", req)

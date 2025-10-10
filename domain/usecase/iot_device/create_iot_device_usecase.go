@@ -8,18 +8,22 @@ import (
 )
 
 type CreateIoTDeviceRequest struct {
-	DeviceName       string
-	DeviceTypeID     string
-	Model            string
-	MacAddress       string
-	IPAddress        string
-	GreenhouseID     string
-	GrowingZoneID    string
-	InstallationDate *time.Time
-	BatteryLevel     int
-	Configuration    map[string]any
-	DefaultConfig    map[string]any
-	CreatedBy        string
+	ID                 string
+	DeviceName         string
+	DeviceTypeID       string
+	Model              string
+	MacAddress         string
+	IPAddress          string
+	GreenhouseID       string
+	GrowingZoneID      string
+	InstallationDate   *time.Time
+	BatteryLevel       int
+	DefaultConfig      map[string]any
+	CreatedBy          string
+	ReadInterval       int
+	AlertEnabled       bool
+	AlertThresholdHigh float64
+	AlertThresholdLow  float64
 }
 
 type CreateIoTDeviceResponse struct {
@@ -34,7 +38,6 @@ type CreateIoTDeviceResponse struct {
 	InstallationDate *time.Time
 	BatteryLevel     int
 	Status           string
-	Configuration    map[string]any
 	DefaultConfig    map[string]any
 	CreatedBy        string
 	CreatedAt        time.Time
@@ -61,26 +64,39 @@ func (u *CreateIoTDeviceUsecase) Execute(ctx context.Context, req *CreateIoTDevi
 		}
 	}
 
-	var installationDate *time.Time
-	if req.InstallationDate != nil {
-		installationDate = req.InstallationDate
+	if req.InstallationDate == nil {
+		now := time.Now()
+		req.InstallationDate = &now
+	}
+
+	if req.DefaultConfig == nil {
+		req.DefaultConfig = map[string]any{
+			"read_interval":        req.ReadInterval,
+			"alert_enabled":        req.AlertEnabled,
+			"alert_threshold_high": req.AlertThresholdHigh,
+			"alert_threshold_low":  req.AlertThresholdLow,
+		}
 	}
 
 	device := &entity.IoTDevice{
-		DeviceName:       req.DeviceName,
-		DeviceTypeID:     req.DeviceTypeID,
-		Model:            req.Model,
-		MacAddress:       req.MacAddress,
-		IPAddress:        req.IPAddress,
-		GreenhouseID:     req.GreenhouseID,
-		GrowingZoneID:    req.GrowingZoneID,
-		InstallationDate: installationDate,
-		BatteryLevel:     req.BatteryLevel,
-		Status:           entity.DeviceStatusActive,
-		Configuration:    entity.JSONB(req.Configuration),
-		DefaultConfig:    entity.JSONB(req.DefaultConfig),
-		CreatedBy:        req.CreatedBy,
-		CreatedAt:        time.Now(),
+		ID:                 req.ID,
+		DeviceName:         req.DeviceName,
+		DeviceTypeID:       req.DeviceTypeID,
+		Model:              req.Model,
+		MacAddress:         req.MacAddress,
+		IPAddress:          req.IPAddress,
+		GreenhouseID:       req.GreenhouseID,
+		GrowingZoneID:      req.GrowingZoneID,
+		InstallationDate:   req.InstallationDate,
+		BatteryLevel:       req.BatteryLevel,
+		Status:             entity.DeviceStatusActive,
+		DefaultConfig:      entity.JSONB(req.DefaultConfig),
+		ReadInterval:       req.ReadInterval,
+		AlertEnabled:       req.AlertEnabled,
+		AlertThresholdHigh: req.AlertThresholdHigh,
+		AlertThresholdLow:  req.AlertThresholdLow,
+		CreatedBy:          req.CreatedBy,
+		CreatedAt:          time.Now(),
 	}
 
 	err := u.iotDeviceRepo.Create(ctx, device)
@@ -99,7 +115,6 @@ func (u *CreateIoTDeviceUsecase) Execute(ctx context.Context, req *CreateIoTDevi
 		GrowingZoneID: device.GrowingZoneID,
 		BatteryLevel:  device.BatteryLevel,
 		Status:        string(device.Status),
-		Configuration: map[string]any(device.Configuration),
 		DefaultConfig: map[string]any(device.DefaultConfig),
 		CreatedBy:     device.CreatedBy,
 		CreatedAt:     device.CreatedAt,

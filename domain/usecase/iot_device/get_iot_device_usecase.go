@@ -23,8 +23,11 @@ type GetIoTDeviceResponse struct {
 	LastMaintenanceDate *time.Time
 	BatteryLevel        int
 	Status              string
-	Configuration       map[string]any
 	DefaultConfig       map[string]any
+	ReadInterval        int
+	AlertEnabled        bool
+	AlertThresholdHigh  float64
+	AlertThresholdLow   float64
 	CreatedBy           string
 	CreatedAt           time.Time
 	UpdatedAt           *time.Time
@@ -60,7 +63,6 @@ func (u *GetIoTDeviceUsecase) Execute(ctx context.Context, req *GetIoTDeviceRequ
 		GrowingZoneID: device.GrowingZoneID,
 		BatteryLevel:  device.BatteryLevel,
 		Status:        string(device.Status),
-		Configuration: map[string]any(device.Configuration),
 		DefaultConfig: map[string]any(device.DefaultConfig),
 		CreatedBy:     device.CreatedBy,
 		CreatedAt:     device.CreatedAt,

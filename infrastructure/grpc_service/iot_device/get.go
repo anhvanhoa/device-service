@@ -26,18 +26,22 @@ func (s *IoTDeviceService) convertRequestGetIoTDevice(req *proto_iot_device.GetI
 
 func (s *IoTDeviceService) convertResponseGetIoTDevice(response *iot_device.GetIoTDeviceResponse) *proto_iot_device.GetIoTDeviceResponse {
 	device := &proto_iot_device.IoTDevice{
-		Id:            response.ID,
-		DeviceName:    response.DeviceName,
-		Status:        response.Status,
-		DeviceTypeId:  response.DeviceTypeID,
-		Model:         response.Model,
-		MacAddress:    response.MacAddress,
-		IpAddress:     response.IPAddress,
-		GreenhouseId:  response.GreenhouseID,
-		GrowingZoneId: response.GrowingZoneID,
-		BatteryLevel:  int32(response.BatteryLevel),
-		CreatedBy:     response.CreatedBy,
-		CreatedAt:     timestamppb.New(response.CreatedAt),
+		Id:                 response.ID,
+		DeviceName:         response.DeviceName,
+		Status:             response.Status,
+		DeviceTypeId:       response.DeviceTypeID,
+		Model:              response.Model,
+		MacAddress:         response.MacAddress,
+		IpAddress:          response.IPAddress,
+		GreenhouseId:       response.GreenhouseID,
+		GrowingZoneId:      response.GrowingZoneID,
+		BatteryLevel:       int32(response.BatteryLevel),
+		ReadInterval:       int32(response.ReadInterval),
+		AlertEnabled:       response.AlertEnabled,
+		AlertThresholdHigh: response.AlertThresholdHigh,
+		AlertThresholdLow:  response.AlertThresholdLow,
+		CreatedBy:          response.CreatedBy,
+		CreatedAt:          timestamppb.New(response.CreatedAt),
 	}
 
 	if response.InstallationDate != nil {
@@ -50,11 +54,6 @@ func (s *IoTDeviceService) convertResponseGetIoTDevice(response *iot_device.GetI
 		device.UpdatedAt = timestamppb.New(*response.UpdatedAt)
 	}
 
-	if response.Configuration != nil {
-		if configStruct, err := structpb.NewStruct(response.Configuration); err == nil {
-			device.Configuration = configStruct
-		}
-	}
 	if response.DefaultConfig != nil {
 		if defaultConfigStruct, err := structpb.NewStruct(response.DefaultConfig); err == nil {
 			device.DefaultConfig = defaultConfigStruct

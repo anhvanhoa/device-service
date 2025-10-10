@@ -7,7 +7,6 @@ import (
 	"github.com/anhvanhoa/service-core/common"
 	common_proto "github.com/anhvanhoa/sf-proto/gen/common/v1"
 	proto_iot_device "github.com/anhvanhoa/sf-proto/gen/iot_device/v1"
-	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -52,11 +51,6 @@ func (s *IoTDeviceService) convertResponseListIoTDevice(response *iot_device.Lis
 			device.InstallationDate = timestamppb.New(*item.InstallationDate)
 		}
 
-		if item.Configuration != nil {
-			if configStruct, err := structpb.NewStruct(item.Configuration); err == nil {
-				device.Configuration = configStruct
-			}
-		}
 		devices[i] = device
 	}
 
