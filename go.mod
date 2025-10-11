@@ -4,7 +4,7 @@ go 1.25.0
 
 require (
 	github.com/anhvanhoa/service-core v0.0.0-20251008083007-3a4d96fe5f88
-	github.com/anhvanhoa/sf-proto v0.0.0-20251010100803-ecd3d05856e4
+	github.com/anhvanhoa/sf-proto v0.0.0-20251011005449-80f7bd3e77be
 	github.com/go-pg/pg/v10 v10.15.0
 	github.com/spf13/viper v1.21.0
 	go.uber.org/zap v1.27.0
@@ -26,6 +26,7 @@ require (
 	github.com/google/cel-go v0.26.1 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.2 // indirect
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.3 // indirect
 	github.com/hashicorp/consul/api v1.32.4 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect

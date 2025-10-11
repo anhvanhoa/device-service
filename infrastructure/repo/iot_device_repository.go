@@ -109,20 +109,20 @@ func (r *iotDeviceRepository) ExistsByMacAddress(ctx context.Context, macAddress
 }
 
 func (r *iotDeviceRepository) applyFilters(query *pg.Query, filters repository.IoTDeviceFilters) *pg.Query {
-	if filters.DeviceTypeID != nil {
-		query = query.Where("device_type_id = ?", *filters.DeviceTypeID)
+	if filters.DeviceTypeID != "" {
+		query = query.Where("device_type_id = ?", filters.DeviceTypeID)
 	}
-	if filters.Status != nil {
-		query = query.Where("status = ?", *filters.Status)
+	if filters.Status != "" {
+		query = query.Where("status = ?", filters.Status)
 	}
-	if filters.GreenhouseID != nil {
-		query = query.Where("greenhouse_id = ?", *filters.GreenhouseID)
+	if filters.GreenhouseID != "" {
+		query = query.Where("greenhouse_id = ?", filters.GreenhouseID)
 	}
-	if filters.GrowingZoneID != nil {
-		query = query.Where("growing_zone_id = ?", *filters.GrowingZoneID)
+	if filters.GrowingZoneID != "" {
+		query = query.Where("growing_zone_id = ?", filters.GrowingZoneID)
 	}
-	if filters.Search != nil && *filters.Search != "" {
-		searchTerm := "%" + strings.ToLower(*filters.Search) + "%"
+	if filters.Search != "" {
+		searchTerm := "%" + strings.ToLower(filters.Search) + "%"
 		query = query.Where("LOWER(device_name) LIKE ? OR LOWER(model) LIKE ?", searchTerm, searchTerm)
 	}
 	return query

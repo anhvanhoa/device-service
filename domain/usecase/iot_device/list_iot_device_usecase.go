@@ -39,11 +39,11 @@ type IoTDeviceItem struct {
 }
 
 type IoTDeviceFilters struct {
-	DeviceTypeID  *string
-	Status        *string
-	GreenhouseID  *string
-	GrowingZoneID *string
-	Search        *string
+	DeviceTypeID  string
+	Status        string
+	GreenhouseID  string
+	GrowingZoneID string
+	Search        string
 }
 
 type ListIoTDeviceUsecase struct {
@@ -74,9 +74,8 @@ func (u *ListIoTDeviceUsecase) Execute(ctx context.Context, req *ListIoTDeviceRe
 		Search:        req.Filters.Search,
 	}
 
-	if req.Filters.Status != nil {
-		status := entity.DeviceStatus(*req.Filters.Status)
-		filters.Status = &status
+	if req.Filters.Status != "" {
+		filters.Status = entity.DeviceStatus(req.Filters.Status)
 	}
 
 	devices, total, err := u.iotDeviceRepo.List(ctx, filters, pagination)

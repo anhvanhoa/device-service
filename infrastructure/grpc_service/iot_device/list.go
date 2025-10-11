@@ -20,13 +20,31 @@ func (s *IoTDeviceService) ListIoTDevice(ctx context.Context, req *proto_iot_dev
 }
 
 func (s *IoTDeviceService) convertRequestListIoTDevice(req *proto_iot_device.ListIoTDeviceRequest) *iot_device.ListIoTDeviceRequest {
+	if req.Pagination == nil {
+		req.Pagination = &common_proto.PaginationRequest{
+			Page:     1,
+			PageSize: 10,
+		}
+	}
+
 	pagination := &common.Pagination{
 		Page:     int(req.Pagination.Page),
 		PageSize: int(req.Pagination.PageSize),
 	}
 
+	filters := iot_device.IoTDeviceFilters{}
+	if req.Filters != nil {
+		filters = iot_device.IoTDeviceFilters{
+			DeviceTypeID:  req.Filters.DeviceTypeId,
+			Status:        req.Filters.Status,
+			GreenhouseID:  req.Filters.GreenhouseId,
+			GrowingZoneID: req.Filters.GrowingZoneId,
+		}
+	}
+
 	return &iot_device.ListIoTDeviceRequest{
 		Pagination: pagination,
+		Filters:    filters,
 	}
 }
 

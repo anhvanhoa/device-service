@@ -20,9 +20,9 @@ type IoTDeviceRepository interface {
 }
 
 type IoTDeviceFilters struct {
-	DeviceTypeID  *string
-	Status        *entity.DeviceStatus
-	GreenhouseID  *string
-	GrowingZoneID *string
-	Search        *string
+	DeviceTypeID  string
+	Status        entity.DeviceStatus
+	GreenhouseID  string
+	GrowingZoneID string
+	Search        string
 }

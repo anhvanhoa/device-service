@@ -46,9 +46,6 @@ func NewGetIoTDeviceUsecase(iotDeviceRepo repository.IoTDeviceRepository) *GetIo
 func (u *GetIoTDeviceUsecase) Execute(ctx context.Context, req *GetIoTDeviceRequest) (*GetIoTDeviceResponse, error) {
 	device, err := u.iotDeviceRepo.GetByID(ctx, req.ID)
 	if err != nil {
-		return nil, err
-	}
-	if device == nil {
 		return nil, ErrIoTDeviceNotFound
 	}
 
