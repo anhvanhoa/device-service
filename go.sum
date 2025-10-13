@@ -13,12 +13,10 @@ github.com/alecthomas/units v0.0.0-20190717042225-c3de453c63f4/go.mod h1:ybxpYRF
 github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d/go.mod h1:rBZYJk541a8SKzHPHnH3zbiI+7dagKZ0cgpgrD7Fyho=
 github.com/anhvanhoa/service-core v0.0.0-20251008083007-3a4d96fe5f88 h1:i9BB89ByXU16prO/iOKbWxrKi9lQtTmkT1MQTYN4oaI=
 github.com/anhvanhoa/service-core v0.0.0-20251008083007-3a4d96fe5f88/go.mod h1:OE5O2WZPf9uv7mwzYPV+x7gD2wxdlsrrPOTOTHT4Imw=
-github.com/anhvanhoa/sf-proto v0.0.0-20251011003552-e0180adc0808 h1:5bei36OCNoUwG9KC18OPDHgvKZpG63jYGf19huZhF4A=
-github.com/anhvanhoa/sf-proto v0.0.0-20251011003552-e0180adc0808/go.mod h1:yejWiDTB9qg2OuykuW0XnklYLsfm9tZP6/58KV5eBpY=
-github.com/anhvanhoa/sf-proto v0.0.0-20251011004610-f297ca2a12f2 h1:AxzB1pi8hkGqjDDReMcZUr0Vc3uuVEBHSE2EuM0u8hc=
-github.com/anhvanhoa/sf-proto v0.0.0-20251011004610-f297ca2a12f2/go.mod h1:yejWiDTB9qg2OuykuW0XnklYLsfm9tZP6/58KV5eBpY=
 github.com/anhvanhoa/sf-proto v0.0.0-20251011005449-80f7bd3e77be h1:0jKtm0aE18H9hBNcF78+LHdsGr8RM9Jiusr7qKKy6o0=
 github.com/anhvanhoa/sf-proto v0.0.0-20251011005449-80f7bd3e77be/go.mod h1:yejWiDTB9qg2OuykuW0XnklYLsfm9tZP6/58KV5eBpY=
+github.com/anhvanhoa/sf-proto v0.0.0-20251013045441-e59a7a5395f7 h1:II8HyGRrH7EWqyd8/KuWNUUl1cRX24JV5QAK0v5HcAU=
+github.com/anhvanhoa/sf-proto v0.0.0-20251013045441-e59a7a5395f7/go.mod h1:CQ7MbEu4NIiPPbidqNJuvHegDs3kq1L8klTBnZxma3w=
 github.com/antlr4-go/antlr/v4 v4.13.1 h1:SqQKkuVZ+zWkMMNkjy5FZe5mr5WURWnlpmOuzYWrPrQ=
 github.com/antlr4-go/antlr/v4 v4.13.1/go.mod h1:GKmUxMtwp6ZgGwZSva4eWPC5mS6vUAmOABFgjdkM7Nw=
 github.com/armon/go-metrics v0.4.1 h1:hR91U9KYmb6bLBYLQjyM+3j+rcd/UhE+G78SFnF8gJA=

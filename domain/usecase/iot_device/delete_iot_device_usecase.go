@@ -27,7 +27,7 @@ func NewDeleteIoTDeviceUsecase(iotDeviceRepo repository.IoTDeviceRepository) *De
 func (u *DeleteIoTDeviceUsecase) Execute(ctx context.Context, req *DeleteIoTDeviceRequest) (*DeleteIoTDeviceResponse, error) {
 	_, err := u.iotDeviceRepo.GetByID(ctx, req.ID)
 	if err != nil {
-		return nil, err
+		return nil, ErrIoTDeviceNotFound
 	}
 
 	err = u.iotDeviceRepo.Delete(ctx, req.ID)
