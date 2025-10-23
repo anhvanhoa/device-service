@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"device-service/bootstrap"
+	"device-service/infrastructure/grpc_client"
 	"device-service/infrastructure/grpc_service"
 	device_type_service "device-service/infrastructure/grpc_service/device_type"
 	iot_device_service "device-service/infrastructure/grpc_service/iot_device"
@@ -11,6 +12,7 @@ import (
 	mqtt_service "device-service/infrastructure/mqtt"
 
 	"github.com/anhvanhoa/service-core/domain/discovery"
+	gc "github.com/anhvanhoa/service-core/domain/grpc_client"
 )
 
 func main() {
@@ -36,13 +38,16 @@ func StartGRPCServer() {
 	}
 	discovery.Register()
 
+	clientFactory := gc.NewClientFactory(env.GrpcClients...)
+	permissionClient := grpc_client.NewPermissionClient(clientFactory.GetClient(env.PermissionServiceAddr))
+
 	deviceTypeServer := device_type_service.NewDeviceTypeService(app.Repo.DeviceType(), app.Helper)
 	iotDeviceServer := iot_device_service.NewIoTDeviceService(app.Repo.IoTDevice(), app.Helper, app.MQ)
 	iotDeviceHistoryServer := iot_device_history_service.NewIoTDeviceHistoryService(app.Repo.IoTDeviceHistory(), app.Helper)
 	sensorDataServer := sensor_data_service.NewSensorDataService(app.Repo.SensorData(), app.Helper)
 
 	grpcSrv := grpc_service.NewGRPCServer(
-		env, log,
+		env, log, app.Cache,
 		deviceTypeServer,
 		iotDeviceServer,
 		iotDeviceHistoryServer,
@@ -54,6 +59,10 @@ func StartGRPCServer() {
 	mqttService.RunSensorData()
 
 	ctx, cancel := context.WithCancel(context.Background())
+	permissions := app.Helper.ConvertResourcesToPermissions(grpcSrv.GetResources())
+	if _, err := permissionClient.PermissionServiceClient.RegisterPermission(ctx, permissions); err != nil {
+		log.Fatal("Failed to register permission: " + err.Error())
+	}
 	defer cancel()
 	if err := grpcSrv.Start(ctx); err != nil {
 		log.Fatal("gRPC server error: " + err.Error())

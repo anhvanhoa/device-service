@@ -4,6 +4,7 @@ import (
 	"device-service/infrastructure/repo"
 
 	"github.com/anhvanhoa/service-core/bootstrap/db"
+	"github.com/anhvanhoa/service-core/domain/cache"
 	"github.com/anhvanhoa/service-core/domain/log"
 	"github.com/anhvanhoa/service-core/domain/mq"
 	"github.com/anhvanhoa/service-core/utils"
@@ -18,6 +19,7 @@ type Application struct {
 	Repo   repo.Repositories
 	Helper utils.Helper
 	MQ     mq.MQI
+	Cache  cache.CacheI
 }
 
 func App() *Application {
@@ -56,6 +58,16 @@ func App() *Application {
 	}
 
 	helper := utils.NewHelper()
+	configRedis := cache.NewConfigCache(
+		env.DbCache.Addr,
+		env.DbCache.Password,
+		env.DbCache.Db,
+		env.DbCache.Network,
+		env.DbCache.MaxIdle,
+		env.DbCache.MaxActive,
+		env.DbCache.IdleTimeout,
+	)
+	cache := cache.NewCache(configRedis)
 	repo := repo.InitRepositories(db, helper)
 
 	return &Application{
@@ -65,5 +77,6 @@ func App() *Application {
 		Repo:   repo,
 		Helper: helper,
 		MQ:     mqtt,
+		Cache:  cache,
 	}
 }
