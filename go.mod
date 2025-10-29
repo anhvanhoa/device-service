@@ -3,7 +3,7 @@ module device-service
 go 1.25.0
 
 require (
-	github.com/anhvanhoa/service-core v0.0.0-20251022064425-eb08b0b36b57
+	github.com/anhvanhoa/service-core v0.0.0-20251029071648-439f705ec130
 	github.com/anhvanhoa/sf-proto v0.0.0-20251021093736-e2719d3e1c04
 	github.com/go-pg/pg/v10 v10.15.0
 	github.com/spf13/viper v1.21.0
@@ -23,6 +23,7 @@ require (
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/go-pg/zerochecker v0.2.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
+	github.com/golang-jwt/jwt/v5 v5.3.0 // indirect
 	github.com/google/cel-go v0.26.1 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.2 // indirect
@@ -48,7 +49,7 @@ require (
 	golang.org/x/net v0.44.0 // indirect
 	golang.org/x/sync v0.17.0 // indirect
 	golang.org/x/sys v0.36.0 // indirect
-	golang.org/x/text v0.29.0 // indirect
+	golang.org/x/text v0.30.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20251007200510-49b9836ed3ff // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20251002232023-7c0ddcbb5797 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
